@@ -1,0 +1,26 @@
+version: "2"
+services:
+  django:
+    container_name: django_server
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: lenta_image_test
+    stdin_open: true
+    tty: true
+    volumes:
+      - .:/var/www/myproject
+    ports:
+      - "8000:8000"
+    network_mode: "host"
+  front:
+    container_name: vue_front
+    build:
+      context: .
+      dockerfile: vue_Dockerfile
+    ports:
+      - "8080:8080"
+    command: sh -c "cd lenta-vue-front && npm run serve"
+    volumes:
+      - ".:/app"
+    network_mode: "host"
