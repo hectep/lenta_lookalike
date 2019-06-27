@@ -1,5 +1,42 @@
 import os
 
+import environ
+
+
+env = environ.Env(
+    DEBUG=(bool, False)
+)
+
+environ.Env.read_env(env_file='.env')
+
+SECRET_KEY = env('SECRET_KEY')
+
+CORS_ORIGIN_ALLOW_ALL = env('CORS_ORIGIN_ALLOW_ALL', cast=bool)
+
+LANGUAGE_CODE = env('LANGUAGE_CODE')
+
+TIME_ZONE = env('TIME_ZONE')
+
+USE_I18N = env('USE_I18N', cast=bool)
+
+USE_L10N = env('USE_L10N', cast=bool)
+
+USE_TZ = env('USE_TZ', cast=bool)
+
+DATABASES = {
+    'default': env.db()
+}
+
+DEBUG = env('DEBUG')
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+ALLOWED_HOSTS = []
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 INSTALLED_APPS = [
@@ -74,8 +111,3 @@ MEDIA_URL = '/media/'
 STATICFILES_DIRS = ()
 
 LENTA_URL = 'https://lenta.ru'
-
-try:
-    from .local_settings import *
-except ImportError:
-    pass
