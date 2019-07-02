@@ -4,7 +4,7 @@ services:
     container_name: django_server
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Django.Dockerfile
     image: lenta_image_test
     stdin_open: true
     tty: true
@@ -17,7 +17,7 @@ services:
     container_name: vue_front
     build:
       context: .
-      dockerfile: vue_Dockerfile
+      dockerfile: Vue.Dockerfile
     ports:
       - "8080:8080"
     command: sh -c "cd lenta-vue-front && npm run serve"
