@@ -53,11 +53,11 @@ def parse_news_post():
 app.conf.beat_schedule = {
     "parse links periodic task": {
         "task": "lenta.celery.parse_news_list",
-        "schedule": 60.0
+        "schedule": 30.0
     },
     "parse post periodic task": {
         "task": "lenta.celery.parse_news_post",
-        "schedule": 60.0
+        "schedule": 30.0
     },
 }
 
