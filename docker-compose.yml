@@ -5,14 +5,16 @@ services:
     build:
       context: .
       dockerfile: Django.Dockerfile
-    image: lenta_image_test
+    image: lenta_backend
     stdin_open: true
     tty: true
     volumes:
-      - .:/var/www/myproject
+      - media:/code/media
     ports:
       - "8000:8000"
+    command: sh -c "python manage.py runserver 0.0.0.0:8000"
     network_mode: "host"
+
   front:
     container_name: vue_front
     build:
@@ -24,3 +26,47 @@ services:
     volumes:
       - ".:/app"
     network_mode: "host"
+
+  celery_workers:
+    container_name: celery_workers
+    build:
+      context: .
+      dockerfile: Django.Dockerfile
+    image: celery_workers
+    stdin_open: true
+    tty: true
+    depends_on:
+      - django
+      - rabbitmq
+      - celery_beat
+
+    volumes:
+      - media:/code/media
+    ports:
+      - "8000:8000"
+    command: sh -c "celery worker -A lenta"
+    network_mode: "host"
+
+  celery_beat:
+    container_name: celery_beat
+    build:
+      context: .
+      dockerfile: Django.Dockerfile
+    image: celery_beat
+    depends_on:
+      - django
+      - rabbitmq
+    stdin_open: true
+    tty: true
+    volumes:
+      - media:/code/media
+    ports:
+      - "8000:8000"
+    command: sh -c "celery -A lenta beat"
+    network_mode: "host"
+
+  rabbitmq:
+    image: rabbitmq:3.7.8
+
+volumes:
+  media:
