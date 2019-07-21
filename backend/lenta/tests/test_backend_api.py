@@ -41,7 +41,6 @@ def test_get_news_post(client):
     assert resp.status_code == 200, 'should return 200'
 
 
-
 @pytest.mark.django_db
 def test_post_newspost(client):
     # request without image
@@ -57,7 +56,7 @@ def test_post_newspost(client):
     )
 
     assert resp.status_code == 201, 'should return 201'
-    assert 'default_news_image.jpg' in resp.data['image']
+    assert 'default_news_image.jpg' in resp.data['image'], 'there should be a default image for news without one'  # noqa
 
 
 @pytest.mark.django_db
