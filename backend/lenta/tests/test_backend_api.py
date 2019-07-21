@@ -2,7 +2,7 @@ import datetime as dt
 import pytz
 import pytest
 
-from django_dynamic_fixture import G, N
+from django_dynamic_fixture import G
 
 from lenta.models import NewsPost, NewsLink
 
@@ -20,11 +20,11 @@ def test_get_news_list(client):
       post_date=dt.datetime(2019, 2, 2, tzinfo=pytz.utc),
       )
 
-    resp = client.get('http://127.0.0.1:8000/lenta/')
+    resp = client.get('/lenta/')
 
     response_urls_list = [b['url'] for b in resp.json()['data']['results']]
 
-    assert resp.status_code == 200
+    assert resp.status_code == 200, 'should return 200'
     assert len(response_urls_list) == 2, 'should return 2 news posts'
     assert response_urls_list == ['2', '1'], 'should return in -post_date order'
 
@@ -37,8 +37,8 @@ def test_get_news_post(client):
       post_date=dt.datetime(2019, 1, 1, tzinfo=pytz.utc),
       )
 
-    resp = client.get('http://127.0.0.1:8000/post/1/')
-    assert resp.status_code == 200
+    resp = client.get('/post/1/')
+    assert resp.status_code == 200, 'should return 200'
 
 
 
@@ -46,7 +46,7 @@ def test_get_news_post(client):
 def test_post_newspost(client):
     # request without image
     resp = client.post(
-        'http://127.0.0.1:8000/lenta/',
+        '/lenta/',
         {
             'url': 'test_url',
             'header': 'test_header',
@@ -79,22 +79,22 @@ def test_get_news_links(client):
       is_parsed=False
       )
 
-    resp = client.get('http://127.0.0.1:8000/links/')
+    resp = client.get('/links/')
     response_urls_list = [b['url'] for b in resp.json()['data']]
 
-    assert resp.status_code == 200
+    assert resp.status_code == 200, 'should return 200'
     assert len(response_urls_list) == 1, 'should return only links starting with "/news" and not yet parsed'  # noqa
     assert response_urls_list == ['/news/valid'], 'should return only links starting with "/news" and not yet parsed'  # noqa
 
 
 @pytest.mark.django_db
 def test_create_newslink(client):
-    resp = client.post('http://127.0.0.1:8000/links/', {'url': 'test_url'})
+    resp = client.post('/links/', {'url': 'test_url'})
 
     assert resp.status_code == 201, 'should return 201'
 
     # trying to create link with the same url
-    resp = client.post('http://127.0.0.1:8000/links/', {'url': 'test_url'})
+    resp = client.post('/links/', {'url': 'test_url'})
     assert resp.status_code == 400, 'should return 400'
 
 
@@ -105,7 +105,7 @@ def test_update_newslink(client):
         url='/news/valid',
         is_parsed=False)
 
-    url_to_news_link = f'http://127.0.0.1:8000/links/{news_link.pk}/'
+    url_to_news_link = f'/links/{news_link.pk}/'
     resp = client.post(url_to_news_link, {'is_parsed': 'true'})
 
     assert resp.status_code == 200, 'should return 200'
