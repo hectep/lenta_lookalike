@@ -3,10 +3,16 @@
 >Django-rest-framework based backend plus
 > a vue.js frontend
 
+This project contains a news website, that boldly steals all its content from lenta.ru using scrapy. Backend is made with Django + DRF. Frontend uses vue.js framework. 
+
 ## Build Setup
+```
+docker-compose build
+docker-compose up
+```
+Or if you want to start it without docker:
 
 Backend:
-
 
 ``` bash
 # install dependencies
@@ -27,13 +33,11 @@ npm run dev
 npm run build
 ```
 
-Celery-based file parsing:
+News scraping:
 
 ``` bash
-#start worker
-celeery worker -A lenta
-#start schedule
-celery -A lenta beat
+#start News links scraping 
+curl http://localhost:6800/schedule.json -d project=default -d spider=News    
+#start News posts scraping
+curl http://localhost:6800/schedule.json -d project=default -d spider=NewsPost    
 ```
-
-This project contains a news website, that boldly steals all its content from lenta.ru using celery and scrapy. Backend is made with Django + DRF. Frontend uses vue.js framework. 
