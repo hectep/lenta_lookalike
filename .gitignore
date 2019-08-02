@@ -52,6 +52,7 @@ coverage.xml
 
 .scrapy
 celerybeat-schedule.db
+dbs/
 
 
 ### Django ###
