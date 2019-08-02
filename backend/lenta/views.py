@@ -1,6 +1,6 @@
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.pagination import CursorPagination
-
+from rest_framework.parsers import MultiPartParser
 from .models import NewsPost, NewsLink
 from .serializers import (NewsPostSerializer, NewsListSerializer,
                           CreateNewsSerializer, NewsLinkSerializer)
@@ -23,6 +23,7 @@ class NewsViewSet(ModelViewSet):
     pagination_class = NewsListPagination
     serializer_class = NewsPostSerializer
     renderer_classes = (NewsPostJSONRenderer,)
+    parser_classes = (MultiPartParser, )
     queryset = NewsPost.objects.all()
     paginate_by_param = 'page_size'
 

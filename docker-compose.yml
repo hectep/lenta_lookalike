@@ -27,46 +27,20 @@ services:
       - ".:/app"
     network_mode: "host"
 
-  celery_workers:
-    container_name: celery_workers
+  parsers:
+    container_name: parsers
     build:
       context: .
-      dockerfile: Django.Dockerfile
-    image: celery_workers
-    stdin_open: true
-    tty: true
-    depends_on:
-      - django
-      - rabbitmq
-      - celery_beat
-
-    volumes:
-      - media:/code/media
+      dockerfile: Scrapy.Dockerfile
     ports:
-      - "8000:8000"
-    command: sh -c "celery worker -A lenta"
-    network_mode: "host"
+      - "6800:6800"
+    command: sh -c "scrapyd --pidfile="
+    environment:
+      - LENTA_URL=https://lenta.ru
+      - BACKEND_LINKS_URL=http://127.0.0.1:8000/links/
+      - BACKEND_CREATE_NEWS_URL=http://127.0.0.1:8000/lenta/
 
-  celery_beat:
-    container_name: celery_beat
-    build:
-      context: .
-      dockerfile: Django.Dockerfile
-    image: celery_beat
-    depends_on:
-      - django
-      - rabbitmq
-    stdin_open: true
-    tty: true
-    volumes:
-      - media:/code/media
-    ports:
-      - "8000:8000"
-    command: sh -c "celery -A lenta beat"
     network_mode: "host"
-
-  rabbitmq:
-    image: rabbitmq:3.7.8
 
 volumes:
   media:

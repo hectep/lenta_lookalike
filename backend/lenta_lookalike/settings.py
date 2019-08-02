@@ -110,8 +110,6 @@ MEDIA_URL = '/media/'
 
 STATICFILES_DIRS = ()
 
-LENTA_URL = 'https://lenta.ru'
-
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.TokenAuthentication',
