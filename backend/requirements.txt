@@ -54,7 +54,7 @@ tabulate==0.8.3
 Twisted==18.9.0
 txaio==18.8.1
 tzlocal==2.0.0
-urllib3==1.24.2
+urllib3==1.26.5
 vine==1.2.0
 w3lib==1.20.0
 zope.interface==4.6.0
