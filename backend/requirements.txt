@@ -6,7 +6,7 @@ autobahn==19.7.2
 Automat==0.7.0
 beautifulsoup4==4.6.3
 billiard==3.5.0.5
-celery==4.2.1
+celery==5.2.2
 certifi==2019.3.9
 cffi==1.11.5
 chardet==3.0.4
